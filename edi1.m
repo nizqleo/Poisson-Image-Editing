@@ -22,7 +22,7 @@ function varargout = edi1(varargin)
 
 % Edit the above text to modify the response to help edi1
 
-% Last Modified by GUIDE v2.5 30-May-2018 16:58:54
+% Last Modified by GUIDE v2.5 30-May-2018 18:26:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -64,6 +64,7 @@ set(handles.text5,'Visible','off');
 set(handles.text6,'Visible','off');
 set(handles.pushbutton1,'Visible','off');
 set(handles.pushbutton2,'Visible','off');
+set(handles.pushbutton3,'Visible','off');
 set(handles.popupmenu3,'Visible','off');
 set(handles.popupmenu4,'Visible','off');
 % UIWAIT makes edi1 wait for user response (see UIRESUME)
@@ -105,7 +106,6 @@ axes(handles.axes3);
 imshow(src_pic);  
 title(filename,'color','r'); 
 
-
 % --------------------------------------------------------------------
 function file_save_Callback(hObject, eventdata, handles)
 % hObject    handle to file_save (see GCBO)
@@ -116,7 +116,7 @@ function file_save_Callback(hObject, eventdata, handles)
     '*.*','All Files(*.*)'},...
     'Save an Image','Undefined.jpg');
 fpath=fullfile(pathname,filename);
-set(gcf,'CurrentAxes',handles.axes3);           %设置想要保存的axes
+set(gcf,'CurrentAxes',handles.axes3);           %璁剧疆鎯宠淇濆瓨鐨刟xes
 final_pic=getimage(gca); 
 imwrite(final_pic,fpath);
 
@@ -127,10 +127,14 @@ function fea_exc_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.text2,'Visible','on');
 set(handles.pushbutton2,'Visible','on');
+set(handles.pushbutton3,'Visible','on');
 set(handles.text2,'String','feature exchange');
 cla;
+
 axes(handles.axes3);
+cla;
 title('');
+
 [filename,pathname]=uigetfile(...
     {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
     '*.*','All Files(*.*)'},...
@@ -139,7 +143,8 @@ fpath=[pathname filename];
 src_pic = imread(fpath);  
 axes(handles.axes1);  
 imshow(src_pic);  
-title(filename,'color','r');  
+title(filename,'color','r');
+
 [filename,pathname]=uigetfile(...
     {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
     '*.*','All Files(*.*)'},...
@@ -150,17 +155,14 @@ axes(handles.axes2);
 imshow(dst_pic);  
 title(filename,'color','r'); 
 
-final_pic=Function_of_feature_exchange(src_pic,dst_pic,handles);
-
-%clear the src and the dst
-title('');
-cla;
-axes(handles.axes1);
-title('');
-cla;
-axes(handles.axes3); 
-imshow(final_pic);
-
+while 1
+    src_pic=getimage(handles.axes1);
+    final_pic=Function_of_feature_exchange(src_pic,dst_pic,handles);
+    imshow(final_pic);
+    dst_pic = final_pic;
+    k = waitforbuttonpress;
+    pause(0.3);
+end
 
 % --------------------------------------------------------------------
 function mon_tra_Callback(hObject, eventdata, handles)
@@ -169,9 +171,11 @@ function mon_tra_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.text2,'Visible','on');
 set(handles.pushbutton2,'Visible','on');
+set(handles.pushbutton3,'Visible','on');
 set(handles.text2,'String','monochrome transfer');
 cla;
 axes(handles.axes3);
+cla;
 title('');
 [filename,pathname]=uigetfile(...
     {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
@@ -192,16 +196,14 @@ axes(handles.axes2);
 imshow(dst_pic);  
 title(filename,'color','r'); 
 
-final_pic=Function_of_monochrome_transfer(src_pic,dst_pic,handles);
-
-%clear the src and the dst
-title('');
-cla;
-axes(handles.axes1);
-title('');
-cla;
-axes(handles.axes3); 
-imshow(final_pic);
+while 1
+    src_pic=getimage(handles.axes1);
+    final_pic=Function_of_monochrome_transfer(src_pic,dst_pic,handles);
+    imshow(final_pic);
+    dst_pic = final_pic;
+    k = waitforbuttonpress;
+    pause(0.3);
+end
 
 % --------------------------------------------------------------------
 function mix_clo_Callback(hObject, eventdata, handles)
@@ -210,10 +212,12 @@ function mix_clo_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.text2,'Visible','on');
 set(handles.pushbutton2,'Visible','on');
+set(handles.pushbutton3,'Visible','on');
 set(handles.text2,'String','mixed cloning');
 cla;
 axes(handles.axes3);
 title('');
+cla;
 [filename,pathname]=uigetfile(...
     {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
     '*.*','All Files(*.*)'},...
@@ -233,17 +237,14 @@ axes(handles.axes2);
 imshow(dst_pic);  
 title(filename,'color','r'); 
 
-final_pic=Function_of_mixed_cloning(src_pic,dst_pic,handles);
-
-%clear the src and the dst
-title('');
-cla;
-axes(handles.axes1);
-title('');
-cla;
-axes(handles.axes3); 
-imshow(final_pic);
-
+while 1
+    src_pic=getimage(handles.axes1);
+    final_pic=Function_of_mixed_cloning(src_pic,dst_pic,handles);
+    imshow(final_pic);
+    dst_pic = final_pic;
+    k = waitforbuttonpress;
+    pause(0.3);
+end
 
 % --------------------------------------------------------------------
 function tex_fla_Callback(hObject, eventdata, handles)
@@ -256,6 +257,7 @@ set(handles.text2,'String','texture flattening');
 cla;
 axes(handles.axes3);
 title('');
+cla;
 [filename,pathname]=uigetfile(...
     {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
     '*.*','All Files(*.*)'},...
@@ -265,9 +267,91 @@ src_pic = imread(fpath);
 axes(handles.axes3);  
 imshow(src_pic);  
 title(filename,'color','r');  
-final_pic=Function_of_texture_flattening(src_pic);
-axes(handles.axes3); 
-imshow(final_pic);
+
+while 1
+    final_pic=Function_of_texture_flattening(src_pic);
+    imshow(final_pic);
+    src_pic = final_pic;
+    k = waitforbuttonpress;
+    pause(0.3);
+    if handles.axes3.Title.String == 'result'
+        break
+    end
+end
+
+% --------------------------------------------------------------------
+function illu_chan_Callback(hObject, eventdata, handles)
+% hObject    handle to illu_chan (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.text2,'Visible','on');
+set(handles.pushbutton2,'Visible','on');
+set(handles.text2,'String','local illumination change');
+cla;
+axes(handles.axes3);
+title('');
+[filename,pathname]=uigetfile(...
+    {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
+    '*.*','All Files(*.*)'},...
+    'Pick an Image');
+fpath=[pathname filename];
+src_pic = imread(fpath);  
+axes(handles.axes3);  
+imshow(src_pic);  
+title(filename,'color','r'); 
+% h = imfreehand;
+% for a=2.1:0.1:4.0
+%     for b = 0.15:0.1:0.45
+%         final_pic=Function_of_local_illumination_change(src_pic,a,b, h);
+%         fpath=fullfile(pathname,['1.',num2str(a),'_',num2str(b),'.bmp']);
+%         imwrite(final_pic,fpath);
+%     end
+% end
+
+while 1
+    final_pic=Function_of_local_illumination_change(src_pic);
+    imshow(final_pic);
+    title(' ');
+    src_pic = final_pic;
+    k = waitforbuttonpress;
+    pause(0.3);
+    if handles.axes3.Title.String == 'result'
+        break
+    end
+end
+
+% --------------------------------------------------------------------
+function color_chan_Callback(hObject, eventdata, handles)
+% hObject    handle to color_chan (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.text2,'Visible','on');
+set(handles.pushbutton2,'Visible','on');
+set(handles.text2,'String','local illumination change');
+cla;
+axes(handles.axes3);
+title('');
+[filename,pathname]=uigetfile(...
+    {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
+    '*.*','All Files(*.*)'},...
+    'Pick an Image');
+fpath=[pathname filename];
+src_pic = imread(fpath);  
+axes(handles.axes3);  
+imshow(src_pic);  
+title(filename,'color','r'); 
+
+while 1
+    final_pic=Function_of_local_color_change(src_pic);
+    imshow(final_pic);
+    title(' ');
+    src_pic = final_pic;
+    k = waitforbuttonpress;
+    pause(0.3);
+    if handles.axes3.Title.String == 'result'
+        break
+    end
+end
 
 % --------------------------------------------------------------------
 function sea_til_Callback(hObject, eventdata, handles)
@@ -284,6 +368,7 @@ set(handles.text2,'String','seamless tiling');
 cla;
 axes(handles.axes3);
 title('');
+cla;
 [filename,pathname]=uigetfile(...
     {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
     '*.*','All Files(*.*)'},...
@@ -294,7 +379,6 @@ axes(handles.axes3);
 imshow(src_pic);  
 title(filename,'color','r');  
 
-
 % --------------------------------------------------------------------
 function m_exit_Callback(hObject, eventdata, handles)
 % hObject    handle to m_exit (see GCBO)
@@ -303,7 +387,6 @@ function m_exit_Callback(hObject, eventdata, handles)
 clc;   
 clear all;
 delete(gcf);
-
 
 % --- Executes on selection change in popupmenu3.
 function popupmenu3_Callback(hObject, eventdata, handles)
@@ -349,13 +432,12 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-set(gcf,'CurrentAxes',handles.axes3);           %设置想要保存的axes
+set(gcf,'CurrentAxes',handles.axes3);           %璁剧疆鎯宠淇濆瓨鐨刟xes
 src_pic=getimage(gca);
 rowlist=get(handles.popupmenu3,'String');
 rowval=get(handles.popupmenu3,'Value');
@@ -373,69 +455,42 @@ axes(handles.axes3);
 imshow(final_pic);
 
 
-% --------------------------------------------------------------------
-function illu_chan_Callback(hObject, eventdata, handles)
-% hObject    handle to illu_chan (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-set(handles.text2,'Visible','on');
-set(handles.pushbutton2,'Visible','on');
-set(handles.text2,'String','local illumination change');
-cla;
-axes(handles.axes3);
-title('');
-[filename,pathname]=uigetfile(...
-    {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
-    '*.*','All Files(*.*)'},...
-    'Pick an Image');
-fpath=[pathname filename];
-src_pic = imread(fpath);  
-axes(handles.axes3);  
-imshow(src_pic);  
-title(filename,'color','r'); 
-% h = imfreehand;
-% for a=2.1:0.1:4.0
-%     for b = 0.15:0.1:0.45
-%         final_pic=Function_of_local_illumination_change(src_pic,a,b, h);
-%         fpath=fullfile(pathname,['1.',num2str(a),'_',num2str(b),'.bmp']);
-%         imwrite(final_pic,fpath);
-%     end
-% end
-final_pic=Function_of_local_illumination_change(src_pic);
-axes(handles.axes3); 
-imshow(final_pic);
-
-
-% --------------------------------------------------------------------
-function color_chan_Callback(hObject, eventdata, handles)
-% hObject    handle to color_chan (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-set(handles.text2,'Visible','on');
-set(handles.pushbutton2,'Visible','on');
-set(handles.text2,'String','local illumination change');
-cla;
-axes(handles.axes3);
-title('');
-[filename,pathname]=uigetfile(...
-    {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
-    '*.*','All Files(*.*)'},...
-    'Pick an Image');
-fpath=[pathname filename];
-src_pic = imread(fpath);  
-axes(handles.axes3);  
-imshow(src_pic);  
-title(filename,'color','r'); 
-final_pic=Function_of_local_color_change(src_pic);
-axes(handles.axes3); 
-imshow(final_pic);
-
 % --- Executes on button press in pushbutton2.
 function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-set(gcf,'CurrentAxes',handles.axes3);           %设置想要保存的axes
-final_pic=getimage(gca);
+set(gcf,'CurrentAxes',handles.axes2);           %璁剧疆鎯宠淇濆瓨鐨刟xes
+set(handles.pushbutton3,'Visible','off');
+
+[final_pic,flag]=getimage(gca);
+if flag == 0
+    [final_pic,flag] = getimage(handles.axes3);
+end
+
+axes(handles.axes2);
+title('');
+cla;
+axes(handles.axes1);
+title('');
+cla;
+
 axes(handles.axes3); 
 imshow(final_pic);
+title('result');
+
+
+% --- Executes on button press in pushbutton3.
+function pushbutton3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[filename,pathname]=uigetfile(...
+    {'*.bmp;*.jpg;*.jpeg;*.png','Image Files(*.bmp,*.jpg,*.png,*.jpeg)';...
+    '*.*','All Files(*.*)'},...
+    'Pick the source file');
+fpath=[pathname filename];
+src_pic = imread(fpath);  
+axes(handles.axes1);  
+imshow(src_pic);
+title(filename,'color','r');
